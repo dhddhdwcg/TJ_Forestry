@@ -1,0 +1,39 @@
+
+<nz-layout class="layout">
+	<nz-header>
+		<div class="logo">
+			天津市林业资源服务平台
+		</div>
+		<div class="nav">
+			<div class="nav-list">
+				<ul>
+					<li>
+						<i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+						<span>添加点</span>
+					</li>
+					<li>
+						<i nz-icon nzType="minus" nzTheme="outline"></i>
+						<span>添加线</span>
+					</li>
+					<li>
+						<i nz-icon nzType="radius-setting" nzTheme="outline"></i>
+						<span>添加面</span>
+					</li>
+				</ul>
+			</div>
+			<ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'">
+				<li nz-menu-item>我的历史</li>
+				<li nz-menu-item>退出</li>
+			</ul>
+		</div>
+	</nz-header>
+	<nz-content>
+		<div id="map"></div>
+		<div class="tools">
+			<ul>
+				<li (click)="tools('measure-distance')" [class.active]="mapTools['measure-distance'].open" title="测距离"><i nz-icon nzType="measuring-distance" nzTheme="outline"></i></li>
+				<li (click)="tools('measure-area')" [class.active]="mapTools['measure-area'].open" title="测面积"><i nz-icon nzType="measuring-area" nzTheme="outline"></i></li>
+			</ul>
+		</div>
+	</nz-content>
+</nz-layout>
