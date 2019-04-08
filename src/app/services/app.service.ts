@@ -8,7 +8,7 @@ export interface InternalStateType {
 export class AppState {
 
   public _state: InternalStateType = {
-    
+    addFormvisible: false
   };
 
   /**

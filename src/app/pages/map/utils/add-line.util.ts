@@ -163,6 +163,7 @@ export class AddLine {
 
 	/**
 	 * 点击事件
+	 * @param {any} e 地图返回的对象
 	 */
 	private handleClick = function(e: any) {
 		let _this = this.getData('AddLine');
@@ -366,13 +367,13 @@ export class AddLine {
 			this.geojson.features.push(newPoint);
 		})
 		this.linestring.geometry.coordinates = [];
-		this.linestring.geometry.coordinates = this.points.map(function(point) {
+		this.linestring.geometry.coordinates = this.points.map((point) => {
 			return point;
 		});
 
 		// 添加节点
 		if (!this.start) {
-			this.points.forEach(function(point, i) {
+			this.points.forEach((point, i) => {
 				if (i > 0) {
 					let _newPoi: [number, number] = [((point[0] - this.points[i - 1][0]) / 2) + this.points[i - 1][0], ((point[1] - this.points[i - 1][1]) / 2) + this.points[i - 1][1]];
 					let _elementNode = document.createElement('div');
@@ -480,7 +481,7 @@ export class AddLine {
 			this.stopCallback();
 		}
 		if (this.nodes.length) {
-			this.nodes.forEach(function(node) {
+			this.nodes.forEach((node) => {
 				node.remove();
 			})
 			this.nodes = [];

@@ -1,5 +1,5 @@
 
-<nz-layout class="layout">
+<nz-layout class="layout" (mousemove)="mousemove($event)">
 	<nz-header>
 		<div class="logo">
 			天津市林业资源服务平台
@@ -7,15 +7,15 @@
 		<div class="nav">
 			<div class="nav-list">
 				<ul>
-					<li>
+					<li (click)="tools('add-point')" [class.active]="mapTools['add-point'].open">
 						<i nz-icon nzType="plus-circle" nzTheme="outline"></i>
 						<span>添加点</span>
 					</li>
-					<li>
+					<li (click)="tools('add-line')" [class.active]="mapTools['add-line'].open">
 						<i nz-icon nzType="minus" nzTheme="outline"></i>
 						<span>添加线</span>
 					</li>
-					<li>
+					<li (click)="tools('add-polygon')" [class.active]="mapTools['add-polygon'].open">
 						<i nz-icon nzType="radius-setting" nzTheme="outline"></i>
 						<span>添加面</span>
 					</li>
@@ -35,15 +35,30 @@
 				<li (click)="tools('measure-area')" [class.active]="mapTools['measure-area'].open" title="测面积"><i nz-icon nzType="measure-area" nzTheme="outline"></i></li>
 			</ul>
 		</div>
-		<div class="layer-filter" [class.show]="loaded">
-			<ul>
-				<li [class.active]="item.active" *ngFor="let item of layerFilter" (click)="setLayerFilter(item)">
-					<div class="icon">
-						<i nz-icon nzType="check" nzTheme="outline"></i>
-					</div>
-					<span>{{item.title}}</span>
-				</li>
-			</ul>
-		</div>
 	</nz-content>
+	<div class="ant-modal-content" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
+		<button aria-label="Close" class="ant-modal-close">
+			<span class="ant-modal-close-x">
+				<i nz-icon nzType="close" nzTheme="outline"></i>
+			</span>
+		</button>
+		<div class="ant-modal-header" (mousedown)="modalMousedown($event)">
+			<div class="ant-modal-title">
+				<div>添加图形</div>
+			</div>
+		</div>
+		<div class="ant-modal-body">
+			<p>Content one</p>
+			<p>Content two</p>
+			<p>Content three</p>
+		</div>
+		<div class="ant-modal-footer">
+			<button class="ant-btn ant-btn-default">
+				<span>取消</span>
+			</button>
+			<button class="ant-btn ant-btn-primary">
+				<span>确定</span>
+			</button>
+		</div>
+	</div>
 </nz-layout>

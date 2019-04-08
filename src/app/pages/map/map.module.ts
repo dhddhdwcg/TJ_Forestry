@@ -17,11 +17,15 @@ import { UtilsService } from '../../services/utils.service';
   ],
   imports: [
     ShareModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     MapRoutingModule
   ],
   providers: [
     AppState,
-    UtilsService
+    UtilsService,
+    httpInterceptorProviders
   ]
 })
 export class MapModule { }
