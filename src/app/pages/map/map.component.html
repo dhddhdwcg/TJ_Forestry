@@ -31,8 +31,18 @@
 		<div id="map"></div>
 		<div class="tools">
 			<ul>
-				<li (click)="tools('measure-distance')" [class.active]="mapTools['measure-distance'].open" title="测距离"><i nz-icon nzType="measuring-distance" nzTheme="outline"></i></li>
-				<li (click)="tools('measure-area')" [class.active]="mapTools['measure-area'].open" title="测面积"><i nz-icon nzType="measuring-area" nzTheme="outline"></i></li>
+				<li (click)="tools('measure-distance')" [class.active]="mapTools['measure-distance'].open" title="测距离"><i nz-icon nzType="measure-distance" nzTheme="outline"></i></li>
+				<li (click)="tools('measure-area')" [class.active]="mapTools['measure-area'].open" title="测面积"><i nz-icon nzType="measure-area" nzTheme="outline"></i></li>
+			</ul>
+		</div>
+		<div class="layer-filter" [class.show]="loaded">
+			<ul>
+				<li [class.active]="item.active" *ngFor="let item of layerFilter" (click)="setLayerFilter(item)">
+					<div class="icon">
+						<i nz-icon nzType="check" nzTheme="outline"></i>
+					</div>
+					<span>{{item.title}}</span>
+				</li>
 			</ul>
 		</div>
 	</nz-content>

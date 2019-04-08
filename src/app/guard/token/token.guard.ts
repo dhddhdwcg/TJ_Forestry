@@ -16,8 +16,8 @@ export class TokenGuard implements CanActivate {
     _token = localStorage.getItem('token');
 
     if (_token) {
-      // this._router.navigate(['/']);
-      return true;
+      this._router.navigate(['/']);
+      return false;
     } else {
       return true;
     }
