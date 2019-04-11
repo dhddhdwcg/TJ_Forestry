@@ -1,18 +1,17 @@
-<div class="ant-modal-content" [class.show]="appState.get('openAddObject')" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
-	<button aria-label="Close" class="ant-modal-close" (click)="cancel()">
+<div class="ant-modal-content" [class.show]="appState.get('addObject')" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
+	<!-- <button aria-label="Close" class="ant-modal-close" (click)="cancel()">
 		<span class="ant-modal-close-x">
 			<i nz-icon nzType="close" nzTheme="outline"></i>
 		</span>
-	</button>
+	</button> -->
 	<div class="ant-modal-header" (mousedown)="modalMousedown($event)">
 		<div class="ant-modal-title">
-			<div>添加图形</div>
+			<div>添加{{title[appState.get('addObjectType')]}}</div>
 		</div>
 	</div>
 	<div class="ant-modal-body">
 		<p>可拖动的弹窗</p>
-		<p>Content two</p>
-		<p>Content three</p>
+		<p>此处是添加{{title[appState.get('addObjectType')]}}的表单</p>
 	</div>
 	<div class="ant-modal-footer">
 		<button class="ant-btn ant-btn-default" (click)="cancel()">

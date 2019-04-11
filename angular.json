@@ -34,7 +34,9 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": [],
+            "scripts": [
+							"src/assets/js/turf.min.js"
+						],
             "es5BrowserSupport": true
           },
           "configurations": {

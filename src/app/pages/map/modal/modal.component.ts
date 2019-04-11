@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { AppState } from '../../../services/app.service';
+import { MissionService } from '../../../services/mission.service';
 
 @Component({
   selector: 'app-modal',
@@ -24,7 +25,14 @@ export class ModalComponent implements OnInit {
 	private mapLayout: ElementRef;
   
   @ViewChild('modal') 
-  private modal: ElementRef;
+	private modal: ElementRef;
+	
+	// 弹窗标题
+	public title: any = {
+		point: '点',
+		line: '线',
+		polygon: '面',
+	}
 
 	@Input()
 	set layout(layout: any) {
@@ -37,12 +45,15 @@ export class ModalComponent implements OnInit {
 	}
 
   constructor(
-		public appState: AppState
-	) { }
+		public appState: AppState,
+		private missionService: MissionService
+	) {
+
+	}
 
   ngOnInit() {
     window.addEventListener('mouseup', () => {
-			if (this.appState.get('openAddObject')) {
+			if (this.appState.get('addObject')) {
 				this.handleMouseup();
 			}
 		})
@@ -105,14 +116,22 @@ export class ModalComponent implements OnInit {
 	 * 提交
 	 */
 	public submit() {
-		this.appState.set('openAddObject', false);
+		this.appState.set('addObject', false);
+		this.missionService.announceMission({
+			type: 'addObjectSubmit',
+			value: true
+		});
 	}
 
 	/**
 	 * 取消
 	 */
 	public cancel() {
-		this.appState.set('openAddObject', false);
+		this.appState.set('addObject', false);
+		this.missionService.announceMission({
+			type: 'addObjectCancel',
+			value: true
+		});
 	}
  
 }

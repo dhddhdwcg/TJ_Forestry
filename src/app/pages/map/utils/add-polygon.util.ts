@@ -1,6 +1,4 @@
 import * as mapboxgl from 'mapbox-gl';
-import { point, distance, lineString, nearest } from 'turf';
-import { AppState } from '../../../services/app.service';
 
 /**
  * 添加多边形
@@ -97,19 +95,6 @@ export class AddPolygon {
 		this.stopCallback = callback;
 		if (!this.map.getData('AddPolygon')) {
 			this.map.setData('AddPolygon', this);
-		}
-
-		// 弹窗dom
-		this.popupElement = document.createElement('div');
-		this.popupElement.className = 'tools-add-form';
-		this.popupElement.innerHTML = '<div class="list"><label for="add-polygon-name">名称：</label><input id="add-polygon-name" /></div><div class="list"><label for="add-polygon-remark">备注：</label><textarea id="add-polygon-remark" rows="2"></textarea></div><div class="submit"><input id="add-polygon-submit" type="button" value="提交"></div>';
-		this.popupCloseElement = document.createElement('div');
-		this.popupCloseElement.className = 'tools-add-form-close';
-		this.popupCloseElement.title = '关闭';
-		this.popupCloseElement.innerHTML = '×';
-		this.popupElement.appendChild(this.popupCloseElement);
-		this.popupCloseElement.onclick = () => {
-			this.destroy();
 		}
 		this.start = true;
 		this.points = [];
@@ -213,15 +198,15 @@ export class AddPolygon {
 			let _zoom = _this.map.getZoom();
 			if (_capture.captureData.length) {
 				if (_capture.captureType === 'Point') {
-					let from = point([e.lngLat.lng, e.lngLat.lat]);
-					let to = point(_capture.captureData);
-					if (distance(from, to) < 655.36 / Math.pow(2, _zoom - 1)) {
+					let from = turf.point([e.lngLat.lng, e.lngLat.lat]);
+					let to = turf.point(_capture.captureData);
+					if (turf.distance(from, to) < 655.36 / Math.pow(2, _zoom - 1)) {
 						_newPoint = _capture.captureData;
 					}
 				} else {
-					let line: any = lineString(_capture.captureData);
-					let pt: any = point([e.lngLat.lng, e.lngLat.lat]);
-					let snapped = nearest(line, pt);
+					let line: any = turf.lineString(_capture.captureData);
+					let pt: any = turf.point([e.lngLat.lng, e.lngLat.lat]);
+					let snapped = (turf as any).nearestPointOnLine(line, pt);
 					if (snapped.properties.dist < 655.36 / Math.pow(2, _zoom - 1)) {
 						_newPoint = snapped.geometry.coordinates;
 					}
@@ -305,16 +290,13 @@ export class AddPolygon {
 		this.draw();
 		this.tipsMarker.remove();
 		if (e && e.lngLat) {
-			document.body.appendChild(this.popupElement);
-			document.getElementById('add-polygon-submit').addEventListener('click', () => {
-				this.save();
-			})
+			this.appState.set('addObject', true)
+			this.appState.set('addObjectType', 'polygon');
 		}
 		setTimeout(() => {
 			this.map.doubleClickZoom.enable();
 		}, 100);
 		this.customize.removeCustomizeMove();
-		this.appState.set('addFormvisible', true)
 	}
 
 	/**
@@ -391,20 +373,8 @@ export class AddPolygon {
 	 * 提交数据
 	 */
 	private save() {
-		let _name: string = (document.getElementById('add-polygon-name') as HTMLInputElement).value;
-		let _remark: string = (document.getElementById('add-polygon-remark') as HTMLInputElement).value;
-		if (!_name.length) {
-			alert('请填写名称');
-			return false;
-		}
-		if (!_remark.length) {
-			alert('请填写备注');
-			return false;
-		}
 		this.polygon.properties = {
-			"name": _name,
-			"remark": _remark,
-			"id": String(new Date().getTime())
+			
 		};
 		this.customize.addCustomizeFeature(JSON.parse(JSON.stringify(this.polygon)));
 		this.destroy();
@@ -448,10 +418,6 @@ export class AddPolygon {
 		this.map.removeLayer('add-polygon-point');
 		this.map.removeLayer('add-polygon-fill');
 		this.map.removeSource('add-polygon-geojson');
-		if (this.popupElement) {
-			document.body.removeChild(this.popupElement);
-		}
-		this.popupElement = null;
 		if (this.stopCallback) {
 			this.stopCallback();
 		}

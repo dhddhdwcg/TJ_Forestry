@@ -1,5 +1,5 @@
-import { point, distance, lineString, nearest } from 'turf';
-
+import { point, distance, lineString } from 'turf';
+import { nearestPointOnLine } from '@turf/nearest-point-on-line';
 /**
  * 自定义交互
  * @param {Object} map mapbox地图对象
@@ -181,9 +181,9 @@ export class Customize {
 					let _zoom = this.map.getZoom();
 					if (this.captureData.length) {
 						if (this.captureType === 'Point') {
-							let from = point([e.lngLat.lng, e.lngLat.lat]);
-							let to = point(this.captureData);
-							if (distance(from, to) < 655.36 / Math.pow(2, _zoom - 1)) {
+							let from = turf.point([e.lngLat.lng, e.lngLat.lat]);
+							let to = turf.point(this.captureData);
+							if (turf.distance(from, to) < 655.36 / Math.pow(2, _zoom - 1)) {
 								this.customizeMoveGeojson.features = [
 									{
 										'type': 'Feature',
@@ -196,9 +196,9 @@ export class Customize {
 								this.map.setPaintProperty('customize-move-point', 'circle-color', '#8BFC6C');
 							}
 						} else {
-							let line: any = lineString(this.captureData);
-							let pt: any = point([e.lngLat.lng, e.lngLat.lat]);
-							let snapped = nearest(line, pt);
+							let line: any = turf.lineString(this.captureData);
+							let pt: any = turf.point([e.lngLat.lng, e.lngLat.lat]);
+							let snapped = (turf as any).nearestPointOnLine(line, pt);
 							if (snapped.properties.dist < 655.36 / Math.pow(2, _zoom - 1)) {
 								this.customizeMoveGeojson.features = [snapped];
 								this.map.setPaintProperty('customize-move-point', 'circle-color', '#8BFC6C');
