@@ -3,15 +3,19 @@
 	overflow: hidden;
 	li{
 		float: left;
+		position: relative;
 		height: 64px;
 		margin-right: 20px;
 		padding-top: 12px;
 		cursor: pointer;
+		>*{
+			position: relative;
+			z-index: 2;
+		}
 		.anticon{
 			width: 18px;
 			height: 18px;
 			font-size: 18px;
-			color: #1890ff;
 			display: block;
 			margin: 0 auto;
 			::ng-deep svg{
@@ -26,5 +30,29 @@
 			font-size: 12px;
 			margin-top: 3px;
 		}
+		&:hover, &.active{
+			color: #1890ff;
+			.anticon{
+				color: #1890ff;
+			}
+			&:before{
+				opacity: 1;
+			}
+		}
+		&:before{
+			content: '';
+			position: absolute;
+			z-index: 1;
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			left: 50%;
+			top: 50%;
+			margin: -28px 0 0 -28px;
+			background-color: #f4f4f4;
+			opacity: 0;
+			transition: opacity 200ms;
+		}
+
 	}
 }

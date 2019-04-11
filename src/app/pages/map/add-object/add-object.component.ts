@@ -68,6 +68,11 @@ export class AddObjectComponent implements OnInit {
    * @param {string} type 工具类型
    */
   public tools(type: string) {
+		for (let item in this.mapTools) {
+			if (type !== item && this.mapTools[item].open) {
+				this.mapTools[item].constructor.destroy();
+			}
+		}
     let _tool = this.mapTools[type];
     if (_tool.open) {
       _tool.constructor.destroy();
