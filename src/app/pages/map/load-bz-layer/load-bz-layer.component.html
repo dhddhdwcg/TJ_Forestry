@@ -1,0 +1,10 @@
+<div class="layer-filter" [class.show]="loaded">
+	<ul>
+		<li [class.active]="item.active" *ngFor="let item of layerFilter" (click)="setLayerFilter(item)">
+			<div class="icon">
+				<i nz-icon nzType="check" nzTheme="outline"></i>
+			</div>
+			<span>{{item.title}}</span>
+		</li>
+	</ul>
+</div>

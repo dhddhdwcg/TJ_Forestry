@@ -11,7 +11,7 @@ import { Observable } from "rxjs";
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
 
-  private baseUrl: string =  'http://39.98.54.81:8081/';
+  private baseUrl: string =  'http://39.98.54.81:9000/';
 
   intercept(
     req: HttpRequest<any>,
@@ -23,7 +23,7 @@ export class BaseUrlInterceptor implements HttpInterceptor {
 
     const httpsReq = req.clone({
       url: this.baseUrl + req.url
-    });
+		});
 
     return next.handle(httpsReq);
   }

@@ -1,49 +1,25 @@
 
-<nz-layout class="layout">
+<nz-layout class="layout" #layout>
 	<nz-header>
 		<div class="logo">
 			天津市林业资源服务平台
 		</div>
 		<div class="nav">
-			<div class="nav-list">
-				<ul>
-					<li>
-						<i nz-icon nzType="plus-circle" nzTheme="outline"></i>
-						<span>添加点</span>
-					</li>
-					<li>
-						<i nz-icon nzType="minus" nzTheme="outline"></i>
-						<span>添加线</span>
-					</li>
-					<li>
-						<i nz-icon nzType="radius-setting" nzTheme="outline"></i>
-						<span>添加面</span>
-					</li>
-				</ul>
-			</div>
+			<!-- 添加图形 -->
+			<app-add-object [map]="map" [customize]="customize"></app-add-object>
 			<ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'">
 				<li nz-menu-item>我的历史</li>
-				<li nz-menu-item>退出</li>
+				<li nz-menu-item (click)="quit()">退出</li>
 			</ul>
 		</div>
 	</nz-header>
 	<nz-content>
 		<div id="map"></div>
-		<div class="tools">
-			<ul>
-				<li (click)="tools('measure-distance')" [class.active]="mapTools['measure-distance'].open" title="测距离"><i nz-icon nzType="measure-distance" nzTheme="outline"></i></li>
-				<li (click)="tools('measure-area')" [class.active]="mapTools['measure-area'].open" title="测面积"><i nz-icon nzType="measure-area" nzTheme="outline"></i></li>
-			</ul>
-		</div>
-		<div class="layer-filter" [class.show]="loaded">
-			<ul>
-				<li [class.active]="item.active" *ngFor="let item of layerFilter" (click)="setLayerFilter(item)">
-					<div class="icon">
-						<i nz-icon nzType="check" nzTheme="outline"></i>
-					</div>
-					<span>{{item.title}}</span>
-				</li>
-			</ul>
-		</div>
+		<!-- 测量 -->
+		<app-measure [map]="map" [customize]="customize"></app-measure>
+		<!-- 添加自定义图层 -->
+		<app-load-bz-layer [map]="map"></app-load-bz-layer>
 	</nz-content>
+	<!-- 添加自定义图层提交的表单弹窗 -->
+	<app-modal [layout]="layout"></app-modal>
 </nz-layout>

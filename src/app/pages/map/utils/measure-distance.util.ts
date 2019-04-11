@@ -82,8 +82,8 @@ export class MeasureDistance {
 			this.handleClickAndDrag();
 		}
 		this.map.addSource('measure-distance-geojson-move-line', {
-			"type": "geojson",
-			"data": this.geojsonMoveLine
+			type: "geojson",
+			data: this.geojsonMoveLine,
 		});
 		this.map.addLayer({
 			id: 'measure-distance-move-line',
@@ -170,7 +170,7 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleClick = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		if (_this.measure['measure-distance-' + _this.index].geojson.features.length > 1) {
 			_this.measure['measure-distance-' + _this.index].geojson.features.pop()
 		};
@@ -184,12 +184,12 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleClickRemove = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		if(!_this.start) {
-			var features = _this.map.queryRenderedFeatures(e.point);
+			let features = _this.map.queryRenderedFeatures(e.point);
 			if (features[0] && features[0].properties && features[0].properties.type === 'measure-distance-point') {
-				var _index: number = features[0].properties.index;
-				var _points: any =  _this.measure['measure-distance-' + _index].points;
+				let _index: number = features[0].properties.index;
+				let _points: any =  _this.measure['measure-distance-' + _index].points;
 				_points = _points.filter((point: any) => {
 					return point.join('') != features[0].properties.coordinate;
 				})
@@ -207,7 +207,7 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleDragMouseMove = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		if(!_this.start && _this.drag) {
 			_this.dragPoints[_this.dragPIndex] = [e.lngLat.lng, e.lngLat.lat];
 			_this.draw(_this.dragIndex, _this.dragPoints);
@@ -219,9 +219,9 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleDragMouseDown = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		if(!_this.start) {
-			var features = _this.map.queryRenderedFeatures(e.point);
+			let features = _this.map.queryRenderedFeatures(e.point);
 			if (features[0] && features[0].properties && features[0].properties.type === 'measure-distance-point') {
 				e.preventDefault();
 				_this.dragIndex = features[0].properties.index;
@@ -237,7 +237,7 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleDragMouseUp = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		_this.drag = false;
 	}
 
@@ -249,7 +249,7 @@ export class MeasureDistance {
 	private draw(index?: number, points?: any[]) {
 		index = index ? index : this.index;
 		points = points ? points : this.points;
-		var _measureData = this.measure['measure-distance-' + index];
+		let _measureData = this.measure['measure-distance-' + index];
 		if (points.length > 1 && points[points.length - 2].join('') == points[points.length - 1].join('')) {
 			points.pop();
 		}
@@ -271,7 +271,7 @@ export class MeasureDistance {
 		}
 		points.forEach((point: any, i: number) => {
 				// 添加点
-				var newPoint = {
+				let newPoint = {
 					"type": "Feature",
 					"geometry": {
 							"type": "Point",
@@ -287,23 +287,23 @@ export class MeasureDistance {
 				};
 				_measureData.geojson.features.push(newPoint);
 				// 添加marker
-				var _elementDiv = document.createElement('div');
+				let _elementDiv = document.createElement('div');
 				_elementDiv.className = 'measure-label';
 				if (i == 0) {
 					_elementDiv.innerHTML = '起点';
 				} else if (i == points.length - 1 && !this.start) {
-					var _lineString: any = {
+					let _lineString: any = {
 						"type": "Feature",
 						"geometry": {
 							"type": "LineString", 
 							"coordinates": points 
 						}
 					}
-					var _total = lineDistance(_lineString).toLocaleString();
+					let _total = lineDistance(_lineString).toLocaleString();
 					_elementDiv.className = 'measure-label total';
 					_elementDiv.innerHTML = '总长：<span class="red">'+ _total +'</span> 公里';
 
-					var _elementClose = document.createElement('div');
+					let _elementClose = document.createElement('div');
 					_elementClose.className = 'measure-close';
 					_elementClose.setAttribute('data-index', index.toString())
 					_measureData.closeMarker = new mapboxgl.Marker({
@@ -311,11 +311,12 @@ export class MeasureDistance {
 						anchor: 'right',
 						offset: [24, 6]
 					}).setLngLat(point).addTo(this.map);
-					_elementClose.onclick = () => {
+					_elementClose.onclick = (event) => {
+						event.stopPropagation();
 						this.destroy(Number(_elementClose.getAttribute('data-index')));
 					}
 				} else {
-					var _linestring: any =  {
+					let _linestring: any =  {
 						"type": "Feature",
 						"geometry": {
 							"type": "LineString", 
@@ -342,8 +343,8 @@ export class MeasureDistance {
 		if (!this.start) {
 			points.forEach((point, i) => {
 				if (i > 0) {
-					var _newPoi: [number, number] = [((point[0] - points[i - 1][0]) / 2) + points[i - 1][0], ((point[1] - points[i - 1][1]) / 2) + points[i - 1][1]];
-					var _elementNode = document.createElement('div');
+					let _newPoi: [number, number] = [((point[0] - points[i - 1][0]) / 2) + points[i - 1][0], ((point[1] - points[i - 1][1]) / 2) + points[i - 1][1]];
+					let _elementNode = document.createElement('div');
 					_elementNode.className = 'measure-node';
 					_measureData.nodes.push(new mapboxgl.Marker({
 						element: _elementNode,
@@ -366,7 +367,7 @@ export class MeasureDistance {
 	 * @param {any} e 地图返回的对象
 	 */
 	private handleMove = function(e: any) {
-		var _this = this.getData('MeasureDistance');
+		let _this = this.getData('MeasureDistance');
 		// 在地图上显示操作的图标
 		_this.map.getCanvas().style.cursor = (_this.start) ? 'url("assets/images/ruler.cur") 3 6, crosshair' : 'inherit';
 		_this.moveLine(e);
@@ -383,7 +384,7 @@ export class MeasureDistance {
 				[e.lngLat.lng, e.lngLat.lat]
 			]
 			this.geojsonMoveLine.features = [this.moveLinestring];
-			var _linestring: any = {
+			let _linestring: any = {
 				"type": "Feature",
 				"geometry": {
 					"type": "LineString", 
@@ -411,15 +412,15 @@ export class MeasureDistance {
 	private setTotal(empty?: boolean, total?: string) {
 		if (empty) {
 			this.tipsElement.innerHTML = '<span>单击确定起点</span>';
-		} else if (!total){
-			var _lineString: any = {
+		} else if (!total && this.points.length){
+			let _lineString: any = {
 				"type": "Feature",
 				"geometry": {
 					"type": "LineString", 
 					"coordinates": this.points 
 				}
 			}
-			var _total = lineDistance(_lineString).toLocaleString() + '公里';
+			let _total = lineDistance(_lineString).toLocaleString() + '公里';
 			this.tipsElement.innerHTML = '<h2>' + _total + '</h2><span>单击确定地点，双击结束</span>';
 		} else {
 			this.tipsElement.innerHTML = '<h2>' + total + '</h2><span>单击确定地点，双击结束</span>';
@@ -430,9 +431,9 @@ export class MeasureDistance {
 	 * 绑定的停止
 	 */
 	private handleStop = function () {
-		var that = this;
+		let that = this;
 		that.doubleClickZoom.disable();
-		var _this = that.getData('MeasureDistance');
+		let _this = that.getData('MeasureDistance');
 		_this.stop();
 	}
 	/**
@@ -510,7 +511,7 @@ export class MeasureDistance {
 		this.map.removeLayer('measure-distance-lines-' + index);
 		this.map.removeLayer('measure-distance-points-' + index);
 		this.map.removeSource('measure-distance-geojson-' + index);
-		var _measureData = this.measure['measure-distance-' + index];
+		let _measureData = this.measure['measure-distance-' + index];
 		_measureData.markers.forEach((marker: any) => {
 			marker.remove();
 		});

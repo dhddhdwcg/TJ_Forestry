@@ -1,0 +1,25 @@
+<div class="ant-modal-content" [class.show]="appState.get('openAddObject')" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
+	<button aria-label="Close" class="ant-modal-close" (click)="cancel()">
+		<span class="ant-modal-close-x">
+			<i nz-icon nzType="close" nzTheme="outline"></i>
+		</span>
+	</button>
+	<div class="ant-modal-header" (mousedown)="modalMousedown($event)">
+		<div class="ant-modal-title">
+			<div>添加图形</div>
+		</div>
+	</div>
+	<div class="ant-modal-body">
+		<p>可拖动的弹窗</p>
+		<p>Content two</p>
+		<p>Content three</p>
+	</div>
+	<div class="ant-modal-footer">
+		<button class="ant-btn ant-btn-default" (click)="cancel()">
+			<span>取消</span>
+		</button>
+		<button class="ant-btn ant-btn-primary" (click)="submit()">
+			<span>确定</span>
+		</button>
+	</div>
+</div>

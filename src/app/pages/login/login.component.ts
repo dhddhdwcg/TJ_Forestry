@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AppState } from '../../services/app.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-		private state: AppState,
 		private router: Router
   ) {}
 
@@ -42,8 +40,8 @@ export class LoginComponent implements OnInit {
       } else{
         localStorage.removeItem('userName');
       }
-      this.http.post('account/token', {
-        loginName: _value.userName,
+      this.http.post('login', {
+        username: _value.userName,
         password: _value.password
       }).subscribe((res: any) => {
         if (res.status === 200) {

@@ -225,7 +225,8 @@ export class MeasureArea {
 						anchor: 'right',
 						offset: [24, 6]
 					}).setLngLat(point).addTo(this.map);
-					_elementClose.onclick = () => {
+					_elementClose.onclick = (event) => {
+						event.stopPropagation();
 						this.destroy(Number(_elementClose.getAttribute('data-index')));
 					}
 				}

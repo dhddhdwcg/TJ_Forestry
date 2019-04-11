@@ -1,5 +1,6 @@
 import * as mapboxgl from 'mapbox-gl';
 import { point, distance, lineString, nearest } from 'turf';
+import { AppState } from '../../../services/app.service';
 
 /**
  * 添加多边形
@@ -82,7 +83,8 @@ export class AddPolygon {
 
 	constructor(
 		private map: any,
-		private customize: any
+		private customize: any,
+		private appState: any
 	) {
 		this.tipsElement.className = 'measure-tips';
 	}
@@ -100,7 +102,7 @@ export class AddPolygon {
 		// 弹窗dom
 		this.popupElement = document.createElement('div');
 		this.popupElement.className = 'tools-add-form';
-		this.popupElement.innerHTML = '<div class="list"><label for="add-line-name">名称：</label><input id="add-line-name" /></div><div class="list"><label for="add-line-remark">备注：</label><textarea id="add-line-remark" rows="2"></textarea></div><div class="submit"><input id="add-line-submit" type="button" value="提交"></div>';
+		this.popupElement.innerHTML = '<div class="list"><label for="add-polygon-name">名称：</label><input id="add-polygon-name" /></div><div class="list"><label for="add-polygon-remark">备注：</label><textarea id="add-polygon-remark" rows="2"></textarea></div><div class="submit"><input id="add-polygon-submit" type="button" value="提交"></div>';
 		this.popupCloseElement = document.createElement('div');
 		this.popupCloseElement.className = 'tools-add-form-close';
 		this.popupCloseElement.title = '关闭';
@@ -303,9 +305,7 @@ export class AddPolygon {
 		this.draw();
 		this.tipsMarker.remove();
 		if (e && e.lngLat) {
-			
 			document.body.appendChild(this.popupElement);
-
 			document.getElementById('add-polygon-submit').addEventListener('click', () => {
 				this.save();
 			})
@@ -314,6 +314,7 @@ export class AddPolygon {
 			this.map.doubleClickZoom.enable();
 		}, 100);
 		this.customize.removeCustomizeMove();
+		this.appState.set('addFormvisible', true)
 	}
 
 	/**
@@ -390,8 +391,8 @@ export class AddPolygon {
 	 * 提交数据
 	 */
 	private save() {
-		let _name: string = (document.getElementById('add-line-name') as HTMLInputElement).value;
-		let _remark: string = (document.getElementById('add-line-remark') as HTMLInputElement).value;
+		let _name: string = (document.getElementById('add-polygon-name') as HTMLInputElement).value;
+		let _remark: string = (document.getElementById('add-polygon-remark') as HTMLInputElement).value;
 		if (!_name.length) {
 			alert('请填写名称');
 			return false;
