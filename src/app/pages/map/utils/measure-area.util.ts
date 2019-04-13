@@ -1,5 +1,5 @@
+declare const turf: any;
 import * as mapboxgl from 'mapbox-gl';
-import { polygon, area } from 'turf';
 
 /**
  * 测面积工具
@@ -207,8 +207,8 @@ export class MeasureArea {
 					_elementDiv.className = 'measure-label';
 					let _area = 0;
 					if (_newPoints.length > 3) {
-						let _polygon: any = polygon([_newPoints]);
-						_area = area(_polygon);
+						let _polygon: any = turf.polygon([_newPoints]);
+						_area = turf.area(_polygon);
 					}
 					_elementDiv.className = 'measure-label total';
 					_elementDiv.innerHTML = '总面积：<span class="red">'+ (_area / 1000000 ).toFixed(3) +'</span> 平方公里）';
@@ -382,8 +382,8 @@ export class MeasureArea {
 				_newPoints.push(poi);
 			})
 			_newPoints.push(_newPoints[0])
-			let _polygon = polygon([_newPoints]);
-			let _area = area(_polygon);
+			let _polygon = turf.polygon([_newPoints]);
+			let _area = turf.area(_polygon);
 			let _total = (_area / 1000000 ).toFixed(3) + ' 平方公里';
 			this.tipsElement.innerHTML = '<h2>' + _total + '</h2><span>单击确定地点，双击结束</span>';
 		}

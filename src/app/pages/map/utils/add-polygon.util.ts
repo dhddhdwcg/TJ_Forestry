@@ -1,3 +1,4 @@
+declare const turf: any;
 import * as mapboxgl from 'mapbox-gl';
 
 /**
@@ -290,8 +291,10 @@ export class AddPolygon {
 		this.draw();
 		this.tipsMarker.remove();
 		if (e && e.lngLat) {
-			this.appState.set('addObject', true)
 			this.appState.set('addObjectType', 'polygon');
+			this.appState.set('addGeometry', this.polygon.geometry);
+			this.appState.set('addFormData', {});
+			this.appState.set('addObject', true)
 		}
 		setTimeout(() => {
 			this.map.doubleClickZoom.enable();

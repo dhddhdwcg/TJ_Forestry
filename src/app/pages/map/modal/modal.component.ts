@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { AppState } from '../../../services/app.service';
 import { MissionService } from '../../../services/mission.service';
 
@@ -34,6 +36,20 @@ export class ModalComponent implements OnInit {
 		polygon: '面',
 	}
 
+	// 是否打开弹窗
+	public Modalopen: boolean = false;
+
+	@Input()
+	set open(value: any) {
+		this.Modalopen = value;
+		if (value) {
+			this.initForm();
+		}
+	}
+	
+	// 表单对象
+	public validateForm: FormGroup;
+
 	@Input()
 	set layout(layout: any) {
 		if (!this.mapLayout) {
@@ -44,9 +60,65 @@ export class ModalComponent implements OnInit {
 		}
 	}
 
+	// 表单数据
+	private formKeys = {
+		point: {
+			name: {
+				required: true
+			},
+			cate: {
+				required: true
+
+			},
+			memo: {
+				required: true
+			},
+			attribute: {
+				required: true
+			},
+			status: {
+				required: true
+			}
+		},
+		polyline: {
+			name: {
+				required: true
+			},
+			cate: {
+				required: true
+
+			},
+			memo: {
+				required: true
+			},
+			attribute: {
+				required: true
+			},
+			status: {
+				required: true
+			}
+		},
+		polygon: {
+			name: {
+				required: true
+			},
+			memo: {
+				required: true
+			},
+			attribute: {
+				required: true
+			},
+			status: {
+				required: true
+			}
+		},
+	}
+
   constructor(
 		public appState: AppState,
-		private missionService: MissionService
+		private missionService: MissionService,
+		private fb: FormBuilder,
+    private http: HttpClient,
 	) {
 
 	}
@@ -56,7 +128,20 @@ export class ModalComponent implements OnInit {
 			if (this.appState.get('addObject')) {
 				this.handleMouseup();
 			}
-		})
+		});
+	}
+
+	/**
+	 * 初始化表单
+	 */
+	private initForm() {
+		let _group = {};
+		let _keys = this.formKeys[this.appState.get('addObjectType')];
+		let _formData = this.appState.get('addFormData');
+		for (let key in _keys) {
+			_group[key] = _keys[key].required ? [_formData[key], [Validators.required]] : [_formData[key]];
+		}
+		this.validateForm = this.fb.group(_group);
 	}
 
 	/**
@@ -116,11 +201,31 @@ export class ModalComponent implements OnInit {
 	 * 提交
 	 */
 	public submit() {
-		this.appState.set('addObject', false);
-		this.missionService.announceMission({
-			type: 'addObjectSubmit',
-			value: true
-		});
+		for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+		}
+		if (this.validateForm.valid) {
+			this.appState.set('loading', true);
+			// let _value = this.validateForm.getRawValue();
+			// _value['geometry'] = JSON.stringify(this.appState.get('addGeometry'));
+			// _value['user_name'] = window.localStorage.getItem('uname');
+			// this.http.post(`gis/${this.appState.get('addObjectType')}/save`, _value).subscribe((res: any) => {
+			// 	this.appState.set('loading', false);
+			// 	if (res.status === 0) {
+			// 		this.appState.set('addObject', false);
+			// 		this.missionService.announceMission({
+			// 			type: 'addObjectSubmit',
+			// 			value: true
+			// 		});
+			// 	}
+			// });
+			this.appState.set('addObject', false);
+			this.missionService.announceMission({
+				type: 'addObjectSubmit',
+				value: true
+			});
+		}
 	}
 
 	/**

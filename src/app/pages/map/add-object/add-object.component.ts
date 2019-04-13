@@ -36,10 +36,12 @@ export class AddObjectComponent implements OnInit {
 			switch(mission.type) {
 				case 'addObjectCancel':
 				this.appState.get('addObjectType') && this.mapTools['add-' + this.appState.get('addObjectType')].constructor.destroy();
+				this.appState.set('addObjectType', '');
 				break;
 
 				case 'addObjectSubmit':
 				this.appState.get('addObjectType') && this.mapTools['add-' + this.appState.get('addObjectType')].constructor.save();
+				this.appState.set('addObjectType', '');
 				break;
 
 				default:
@@ -53,7 +55,7 @@ export class AddObjectComponent implements OnInit {
       constructor: new AddPoint(this.map, this.customize, this.appState),
       open: false
     };
-    this.mapTools['add-line'] = {
+    this.mapTools['add-polyline'] = {
       constructor: new AddLine(this.map, this.customize, this.appState),
       open: false
     };

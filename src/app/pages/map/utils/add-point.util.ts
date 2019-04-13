@@ -63,8 +63,13 @@ export class AddPoint {
 		_this.map.getCanvas().style.cursor = 'inherit';
 		_this.map.off('click', _this.handleClick);		
 		_this.customize.removeCustomizeMove();
-		_this.appState.set('addObject', true);
 		_this.appState.set('addObjectType', 'point');
+		_this.appState.set('addGeometry', {
+			"type": "Point",
+			"coordinates": [_this.marker.getLngLat().lng, _this.marker.getLngLat().lat]
+		});
+		_this.appState.set('addFormData', {});
+		_this.appState.set('addObject', true);
 	}
 
 	/**

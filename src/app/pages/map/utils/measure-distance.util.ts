@@ -1,5 +1,5 @@
+declare const turf: any;
 import * as mapboxgl from 'mapbox-gl';
-import { lineDistance } from 'turf';
 
 /**
  * 测距工具
@@ -299,7 +299,7 @@ export class MeasureDistance {
 							"coordinates": points 
 						}
 					}
-					let _total = lineDistance(_lineString).toLocaleString();
+					let _total = turf.lineDistance(_lineString).toLocaleString();
 					_elementDiv.className = 'measure-label total';
 					_elementDiv.innerHTML = '总长：<span class="red">'+ _total +'</span> 公里';
 
@@ -325,7 +325,7 @@ export class MeasureDistance {
 							})
 						}
 					};
-					_elementDiv.innerHTML = lineDistance(_linestring).toLocaleString() + ' 公里';
+					_elementDiv.innerHTML = turf.lineDistance(_linestring).toLocaleString() + ' 公里';
 				}
 				_measureData.markers.push(new mapboxgl.Marker({
 					element: _elementDiv,
@@ -392,7 +392,7 @@ export class MeasureDistance {
 				}
 			};
 			_linestring.geometry.coordinates.push([e.lngLat.lng, e.lngLat.lat]);
-			this.setTotal(false, lineDistance(_linestring).toLocaleString() + '公里');
+			this.setTotal(false, turf.lineDistance(_linestring).toLocaleString() + '公里');
 		} else {
 			this.geojsonMoveLine.features = [{
 				"type": "FeatureCollection",
@@ -420,7 +420,7 @@ export class MeasureDistance {
 					"coordinates": this.points 
 				}
 			}
-			let _total = lineDistance(_lineString).toLocaleString() + '公里';
+			let _total = turf.lineDistance(_lineString).toLocaleString() + '公里';
 			this.tipsElement.innerHTML = '<h2>' + _total + '</h2><span>单击确定地点，双击结束</span>';
 		} else {
 			this.tipsElement.innerHTML = '<h2>' + total + '</h2><span>单击确定地点，双击结束</span>';

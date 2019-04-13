@@ -94,7 +94,9 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": [],
+            "scripts": [
+							"src/assets/js/turf.min.js"
+						],
             "assets": [
               "src/favicon.ico",
               "src/assets"

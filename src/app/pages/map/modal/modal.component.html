@@ -1,4 +1,4 @@
-<div class="ant-modal-content" [class.show]="appState.get('addObject')" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
+<div class="ant-modal-content" [class.show]="Modalopen" [ngStyle]="{transform: 'translate3d('+offset.x+'px, '+offset.y+'px, 0px)'}" #modal>
 	<!-- <button aria-label="Close" class="ant-modal-close" (click)="cancel()">
 		<span class="ant-modal-close-x">
 			<i nz-icon nzType="close" nzTheme="outline"></i>
@@ -10,8 +10,69 @@
 		</div>
 	</div>
 	<div class="ant-modal-body">
-		<p>可拖动的弹窗</p>
-		<p>此处是添加{{title[appState.get('addObjectType')]}}的表单</p>
+		<form nz-form [formGroup]="validateForm" *ngIf="validateForm" class="modal-form">
+      <nz-form-item *ngIf="validateForm.get('name')">
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixName">
+            <input type="text" nz-input formControlName="name" placeholder="名称" />
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">
+						请填写名称！
+					</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.get('memo')">
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixTags">
+            <input type="text" nz-input formControlName="memo" placeholder="属性" />
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('memo')?.dirty && validateForm.get('memo')?.errors">
+						请填写属性！
+					</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.get('attribute')">
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixAttribute">
+            <input type="text" nz-input formControlName="attribute" placeholder="面坐标" />
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('attribute')?.dirty && validateForm.get('attribute')?.errors">
+						请填写面坐标！
+					</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.get('cate')">
+        <nz-form-control>
+          <nz-input-group>
+						<nz-select style="width: 100%"  formControlName="cate" nzAllowClear nzPlaceHolder="类型">
+							<nz-option nzValue="1" nzLabel="类型1"></nz-option>
+							<nz-option nzValue="2" nzLabel="类型2"></nz-option>
+						</nz-select>
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('cate')?.dirty && validateForm.get('cate')?.errors">
+						请选择类型！
+					</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.get('status')">
+        <nz-form-control>
+          <nz-input-group>
+						<nz-select style="width: 100%"  formControlName="status" nzAllowClear nzPlaceHolder="状态">
+							<nz-option nzValue="1" nzLabel="开启"></nz-option>
+							<nz-option nzValue="0" nzLabel="关闭"></nz-option>
+						</nz-select>
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('status')?.dirty && validateForm.get('status')?.errors">
+						请选择状态！
+					</nz-form-explain
+          >
+        </nz-form-control>
+      </nz-form-item>
+    </form>
 	</div>
 	<div class="ant-modal-footer">
 		<button class="ant-btn ant-btn-default" (click)="cancel()">
@@ -22,3 +83,6 @@
 		</button>
 	</div>
 </div>
+<ng-template #prefixName><i nz-icon nzType="profile" nzTheme="outline"></i></ng-template>
+<ng-template #prefixTags><i nz-icon nzType="tags" nzTheme="outline"></i></ng-template>
+<ng-template #prefixAttribute><i nz-icon nzType="environment" nzTheme="outline"></i></ng-template>

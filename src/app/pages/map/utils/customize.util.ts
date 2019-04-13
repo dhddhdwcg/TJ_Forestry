@@ -1,5 +1,4 @@
-import { point, distance, lineString } from 'turf';
-import { nearestPointOnLine } from '@turf/nearest-point-on-line';
+declare const turf: any;
 /**
  * 自定义交互
  * @param {Object} map mapbox地图对象

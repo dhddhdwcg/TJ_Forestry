@@ -21,5 +21,8 @@
 		<app-load-bz-layer [map]="map"></app-load-bz-layer>
 	</nz-content>
 	<!-- 添加自定义图层提交的表单弹窗 -->
-	<app-modal [layout]="layout"></app-modal>
+	<app-modal [layout]="layout" [open]="appState.get('addObject')"></app-modal>
 </nz-layout>
+<div class="loading" *ngIf="appState.get('loading')">
+	<i nz-icon nzType="loading" nzTheme="outline"></i>
+</div>
